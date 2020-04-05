@@ -15,8 +15,10 @@ echo "                ||----w |                    "
 echo "                ||     ||                    "
 sleep 5
 echo "installing..."
-ls ~/.config/nvim &>/dev/null || rm -rf  ~/.config/nvim
+ls ~/.config/nvim &>/dev/null && rm -rf  ~/.config/nvim
 mkdir ~/.config/nvim
+mv ./coc-settings.json   ~/.config/nvim
+mv ./init.vim    ~/.config/nvim
 
 pacman -Q | grep python &>/dev/null | |   if sudo pacman -S python 2> logs ; then
 																						echo "python installation completed"
@@ -37,3 +39,16 @@ pacman -Q | grep ccls &> /dev/null  || sudo pacman -S ccls 2>logs
 pacman -Q | grep clang &> /dev/null || sudo pacman -S clang 2>logs
 pip install debugpy jedi 2>logs
 sudo npm i intelephense -g 2>logs
+
+
+sudo pacman -S powerline-fonts 2>logs
+mkdir -p ~/.local/share/fonts
+cd ~/.local/share/fonts && curl -fLo "Droid Sans Mono for Powerline Nerd Font Complete.otf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20Nerd%20Font%20Complete.otf
+echo""
+echo""
+echo " _           _        _ _                             _      _           _ "
+echo "(_)_ __  ___| |_ __ _| | |   ___ ___  _ __ ___  _ __ | | ___| |_ ___  __| |"
+echo "| | '_ \/ __| __/ _` | | |  / __/ _ \| '_ ` _ \| '_ \| |/ _ \ __/ _ \/ _` |"
+echo "| | | | \__ \ || (_| | | | | (_| (_) | | | | | | |_) | |  __/ ||  __/ (_| |"
+echo "|_|_| |_|___/\__\__,_|_|_|  \___\___/|_| |_| |_| .__/|_|\___|\__\___|\__,_|"
+echo "                                               |_|                         "
