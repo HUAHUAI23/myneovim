@@ -21,7 +21,7 @@ mv ./coc-settings.json  ~/.config/nvim
 mv ./init.vim      ~/.config/nvim
 
 
-dpkg -l | grep python &>/dev/null | |   if sudo apt install python 2> logs ; then
+dpkg -l | grep python &>/dev/null ||   if sudo apt install python 2> logs ; then
 																						echo "python installation completed"
 																					else
 																						echo "python not be installed"
