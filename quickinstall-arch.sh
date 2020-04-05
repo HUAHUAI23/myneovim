@@ -20,7 +20,7 @@ mkdir ~/.config/nvim
 mv ./coc-settings.json   ~/.config/nvim
 mv ./init.vim    ~/.config/nvim
 
-pacman -Q | grep python &>/dev/null ||   if sudo pacman -S python 2> logs ; then
+pacman -Q | grep python &>/dev/null ||   if sudo pacman -S python |tee | cat ; then
 																						echo "python installation completed"
 																					else
 																						echo "python not be installed"
