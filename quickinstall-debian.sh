@@ -6,7 +6,7 @@ echo "| nerd-fonts powerline-fonts.              | "
 echo "| if no errors we will help you install    | "
 echo "| these,if someone not be installed then   | "
 echo "| you have to install it manully,and       | "
-echo "\ eorrs (if have) will be record in logs.  / "
+echo "\ eorrs (if have) will be record in screen./ "
 echo " ------------------------------------------  "
 echo "        \   ^__^                             "
 echo "         \  (oo)\_______                     "
@@ -21,23 +21,23 @@ mv ./coc-settings.json  ~/.config/nvim
 mv ./init.vim      ~/.config/nvim
 
 
-dpkg -l | grep python &>/dev/null ||   if sudo apt install python 2> logs ; then
+dpkg -l | grep python &>/dev/null ||   if sudo apt install python  ; then
 																						echo "python installation completed"
 																					else
 																						echo "python not be installed"
 																					fi
-dpkg -l | grep python-pip &>/dev/null || sudo apt install python-pip 2>logs
-sudo apt install  neovim 2>logs
-sudo apt install python3-neovim 2>logs
+dpkg -l | grep python-pip &>/dev/null || sudo apt install python-pip
+sudo apt install  neovim
+sudo apt install python3-neovim
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-dpkg -l  | grep nodejs &> /dev/null || sudo apt install nodejs 2>logs
-dpkg -l  | grep npm &> /dev/null  || sudo apt install npm 2>logs
-dpkg -l  | grep cmdtest &> /dev/null || sudo apt install cmdtest 2>logs
-dpkg -l  | grep ctags &> /dev/null || sudo apt install ctags 2>logs
-dpkg -l  | grep clang &> /dev/null || sudo apt install clang 2>logs
-pip install debugpy jedi 2>logs
-sudo npm i intelephense -g 2>logs
+dpkg -l  | grep nodejs &> /dev/null || sudo apt install nodejs
+dpkg -l  | grep npm &> /dev/null  || sudo apt install npm
+dpkg -l  | grep cmdtest &> /dev/null || sudo apt install cmdtest
+dpkg -l  | grep ctags &> /dev/null || sudo apt install ctags
+dpkg -l  | grep clang &> /dev/null || sudo apt install clang
+pip install debugpy jedi
+sudo npm i intelephense -g
 
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install
