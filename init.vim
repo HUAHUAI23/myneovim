@@ -7,14 +7,6 @@
 "===============================================长修此道者巨变人生。 ==========================================================
 
 
-
-if empty(glob('~/.config/nvim/plugged/'))
-	autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
-
-
-
-
 " Specify a directory for plugins
 " - For Neovim: stdpath('data') . '/plugged'
 " - Avoid using standard Vim directory names like 'plugin'
@@ -65,7 +57,8 @@ Plug 'Yggdroot/indentLine'
 Plug 'makerj/vim-pdf'
 "css/less/sass/html color preview for vim 
 Plug 'gko/vim-coloresque'
-
+" Taglist
+Plug 'liuchengxu/vista.vim'
 " end of plugin
 " Initialize plugin system
 call plug#end()
@@ -74,6 +67,25 @@ call plug#end()
 "====== rainbow configuration
 "=========
 let g:rainbow_active = 1
+
+" ========
+" ===== Vista.vim
+" =======
+noremap <silent> T :Vista!!<CR>
+noremap <c-t> :silent! Vista finder<CR>
+let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
+let g:vista_default_executive = 'ctags'
+let g:vista_fzf_preview = ['right:50%']
+let g:vista#renderer#enable_icon = 1
+let g:vista#renderer#icons = {
+\   "function": "\uf794",
+\   "variable": "\uf71b",
+\  }
+function! NearestMethodOrFunction() abort
+	return get(b:, 'vista_nearest_method_or_function', '')
+endfunction
+set statusline+=%{NearestMethodOrFunction()}
+autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
 
 
 "==========
@@ -112,7 +124,7 @@ map <F6> :NERDTreeToggle<CR>
 "==========
 "set tagbar window on left of main window
 " 设置 tagbar 窗口的位置出现在主编辑区的左边
-let tagbar_left=1
+let tagbar_left=0
 "<F3>  toggle tagbar
 " 设置显示／隐藏标签列表子窗口的快捷键。快捷键ctrl l
 nnoremap <F3> :TagbarToggle<CR>
@@ -172,7 +184,7 @@ let g:undotree_WindowLayout = 2
 let g:undotree_DiffpanelHeight = 8
 let g:undotree_SplitWidth = 24
 if has("persistent_undo")
-        set undodir=$HOME."/.undodir"
+        set undodir=~/.undodir"
         set undofile
 endif
 
@@ -217,56 +229,18 @@ let g:formatters_c = ['clangformat_google']
 "====== fzf configuration
 "==========
 "use shortcut ctrl k to find file content and use shortcut esc to exit fzf
-"快捷键 ctrl k 打开fzf进行文件内容查找，快捷键esc退出fzf窗口
-"set rtp+=/usr/local/opt/fzf
-"set rtp+=/home/linuxbrew/.linuxbrew/opt/fzf
-noremap <C-p> :FZF<CR>
-noremap <C-f> :Ag<CR>
-noremap <C-h> :MRU<CR>
+set rtp+=/usr/local/opt/fzf
+set rtp+=/home/linuxbrew/.linuxbrew/opt/fzf
+noremap <C-p> :Files<CR>
+noremap <C-f> :Rg<CR>
+noremap <C-h> :History<CR>
 "noremap <C-t> :BTags<CR>
-noremap <C-k> :LinesWithPreview<CR>
+noremap <C-l> :Lines<CR>
 noremap <C-w> :Buffers<CR>
-"noremap ; :History:<CR>
+noremap <leader>; :History:<CR>
 
-autocmd! FileType fzf
-autocmd  FileType fzf set laststatus=0 noruler
-  \| autocmd BufLeave <buffer> set laststatus=2 ruler
-
-command! -bang -nargs=* Buffers
-  \ call fzf#vim#buffers(
-  \   '',
-  \   <bang>0 ? fzf#vim#with_preview('up:60%')
-  \           : fzf#vim#with_preview('right:0%', '?'),
-  \   <bang>0)
-
-
-command! -bang -nargs=* LinesWithPreview
-    \ call fzf#vim#grep(
-    \   'rg --with-filename --column --line-number --no-heading --color=always --smart-case . '.fnameescape(expand('%')), 1,
-    \   fzf#vim#with_preview({}, 'up:50%', '?'),
-    \   1)
-
-command! -bang -nargs=* Ag
-  \ call fzf#vim#ag(
-  \   '',
-  \   <bang>0 ? fzf#vim#with_preview('up:60%')
-  \           : fzf#vim#with_preview('right:50%', '?'),
-  \   <bang>0)
-
-
-command! -bang -nargs=* MRU call fzf#vim#history(fzf#vim#with_preview())
-
-command! -bang BTags
-  \ call fzf#vim#buffer_tags('', {
-  \     'down': '40%',
-  \     'options': '--with-nth 1 
-  \                 --reverse 
-  \                 --prompt "> " 
-  \                 --preview-window="70%" 
-  \                 --preview "
-  \                     tail -n +\$(echo {3} | tr -d \";\\\"\") {2} |
-  \                     head -n 16"'
-  \ })
+let g:fzf_preview_window = 'right:60%'
+let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
 
 "==========
 "====== vim ariline configuration
@@ -284,7 +258,7 @@ let g:airline#extensions#tabline#left_alt_sep = '|'
 
 set termguicolors " enable true colors support
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-set t_Co=256
+"set t_Co=256
 
 " 配色方案
 "================================
@@ -316,6 +290,10 @@ set foldenable "set nofoldenable
 "将当前目录跳转到当前打开文件的目录
 let &t_ul=''
 set autochdir
+
+"gutter (signcolumn) settings
+"set signcolumn=no "only use signcolumn will display signcolumn,normally don't display it
+"highlight clear SignColumn "set signcolumn colors same with backgroud colors
 
 set autoindent
 set indentexpr=
@@ -401,6 +379,66 @@ syntax on
 autocmd FileType json syntax match Comment +\/\/.\+$+
 "========================================
 
+" ==========
+" ======= Terminal Behaviors
+" =========
+let g:neoterm_autoscroll = 1
+autocmd TermOpen term://* startinsert
+tnoremap <C-N> <C-\><C-N>
+tnoremap <C-O> <C-\><C-N><C-O>
+let g:terminal_color_0  = '#000000'
+let g:terminal_color_1  = '#FF5555'
+let g:terminal_color_2  = '#50FA7B'
+let g:terminal_color_3  = '#F1FA8C'
+let g:terminal_color_4  = '#BD93F9'
+let g:terminal_color_5  = '#FF79C6'
+let g:terminal_color_6  = '#8BE9FD'
+let g:terminal_color_7  = '#BFBFBF'
+let g:terminal_color_8  = '#4D4D4D'
+let g:terminal_color_9  = '#FF6E67'
+let g:terminal_color_10 = '#5AF78E'
+let g:terminal_color_11 = '#F4F99D'
+let g:terminal_color_12 = '#CAA9FA'
+let g:terminal_color_13 = '#FF92D0'
+let g:terminal_color_14 = '#9AEDFE'
+
+" Compile function
+noremap <F5> :call CompileRunGcc()<CR>
+func! CompileRunGcc()
+	exec "w"
+	if &filetype == 'c'
+		exec "!g++ % -Wall -o %<"
+		exec "!time ./%<"
+	elseif &filetype == 'cpp'
+		set splitbelow
+		exec "!g++ -std=c++11 % -Wall -o %<"
+		:sp
+		:res -15
+		:term ./%<
+	elseif &filetype == 'java'
+		exec "!javac %"
+		exec "!time java %<"
+	elseif &filetype == 'sh'
+		:!time bash %
+	elseif &filetype == 'python'
+		set splitbelow
+		:sp
+		:term python3 %
+	elseif &filetype == 'html'
+		silent! exec "!".g:mkdp_browser." % &"
+	elseif &filetype == 'markdown'
+		exec "MarkdownPreview"
+	elseif &filetype == 'tex'
+		silent! exec "VimtexStop"
+		silent! exec "VimtexCompile"
+	elseif &filetype == 'dart'
+		CocCommand flutter.run
+	elseif &filetype == 'go'
+		set splitbelow
+		:sp
+		:term go run .
+	endif
+endfunc
 
 "==========
 "====== coc-vim configuration
