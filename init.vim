@@ -1,11 +1,14 @@
 
-"===============================================vi 之大道如我心之禅，==========================================================
-"===============================================vi 之漫路即为禅修，  ==========================================================
-"===============================================vi 之命令禅印于心，  ==========================================================
-"===============================================未得此道者视之怪诞， ==========================================================
-"===============================================与之为伴者洞其真谛， ==========================================================
-"===============================================长修此道者巨变人生。 ==========================================================
+"================================================ vi 之大道如我心之禅，==========================================================
+"================================================ vi 之漫路即为禅修，  ==========================================================
+"================================================ vi 之命令禅印于心，  ==========================================================
+"================================================ 未得此道者视之怪诞， ==========================================================
+"================================================ 与之为伴者洞其真谛， ==========================================================
+"================================================ 长修此道者巨变人生。 ==========================================================
 
+if empty(glob('~/.config/nvim/autoload/plug.vim'))
+	autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
 
 " Specify a directory for plugins
 " - For Neovim: stdpath('data') . '/plugged'
@@ -55,13 +58,78 @@ Plug 'jiangmiao/auto-pairs'
 "A vim plugin to display the indention levels with thin vertical lines 
 Plug 'Yggdroot/indentLine' 
 Plug 'makerj/vim-pdf'
-"css/less/sass/html color preview for vim 
+"css/less/sass/html color preview for vim
 Plug 'gko/vim-coloresque'
 " Taglist
 Plug 'liuchengxu/vista.vim'
-" end of plugin
+" Debugger
+Plug 'puremourning/vimspector', {'do': './install_gadget.py --enable-c --enable-python'}
+" markdown
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install_sync() }, 'for' :['markdown', 'vim-plug'] }
+Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeToggle' }
+"git
+Plug 'airblade/vim-gitgutter'
+"Bookmark
+Plug 'MattesGroeger/vim-bookmarks'
+"end of plugin
 " Initialize plugin system
 call plug#end()
+
+" =========
+" ====== GitGutter
+" =========
+let g:gitgutter_signs = 0
+let g:gitgutter_map_keys = 0
+let g:gitgutter_override_sign_column_highlight = 0
+let g:gitgutter_preview_win_floating = 1
+autocmd BufWritePost * GitGutter
+nnoremap <LEADER>gf :GitGutterFold<CR>
+nnoremap M :GitGutterPreviewHunk<CR>
+nnoremap <LEADER>g- :GitGutterPrevHunk<CR>
+nnoremap <LEADER>g= :GitGutterNextHunk<CR>
+
+"==========
+"====== markdown-preview
+"=========
+let g:mkdp_auto_start = 0
+let g:mkdp_auto_close = 1
+let g:mkdp_refresh_slow = 0
+let g:mkdp_command_for_global = 0
+let g:mkdp_open_to_the_world = 0
+let g:mkdp_open_ip = ''
+let g:mkdp_browser = 'firefox'
+let g:mkdp_echo_preview_url = 0
+let g:mkdp_browserfunc = ''
+let g:mkdp_preview_options = {
+			\ 'mkit': {},
+			\ 'katex': {},
+			\ 'uml': {},
+			\ 'maid': {},
+			\ 'disable_sync_scroll': 0,
+			\ 'sync_scroll_type': 'middle',
+			\ 'hide_yaml_meta': 1
+			\ }
+let g:mkdp_markdown_css = ''
+let g:mkdp_highlight_css = ''
+let g:mkdp_port = ''
+let g:mkdp_page_title = '「${name}」'
+
+"==========
+"====== markdown settings
+"==========
+" Snippets
+source ~/.config/nvim/md-snippets.vim
+" auto spell
+autocmd BufRead,BufNewFile *.md setlocal spell
+
+" =========
+" ===== vim-table-mode
+" =========
+noremap <LEADER>tm :TableModeToggle<CR>
+"let g:table_mode_disable_mappings = 1
+let g:table_mode_corner ='|'
+let g:table_mode_delimiter = ''
+let g:table_mode_cell_text_object_i_map = 'k<Bar>'
 
 "==========
 "====== rainbow configuration
@@ -87,11 +155,51 @@ endfunction
 set statusline+=%{NearestMethodOrFunction()}
 autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
 
+" =========
+" ====== vimspector
+" =========
+let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
+function! s:read_template_into_buffer(template)
+	" has to be a function to avoid the extra space fzf#run insers otherwise
+	execute '0r ~/.config/nvim/sample_vimspector_json/'.a:template
+endfunction
+command! -bang -nargs=* LoadVimSpectorJsonTemplate call fzf#run({
+			\   'source': 'ls -1 ~/.config/nvim/sample_vimspector_json',
+			\   'down': 20,
+			\   'sink': function('<sid>read_template_into_buffer')
+			\ })
+noremap <leader>vs :tabe .vimspector.json<CR>:LoadVimSpectorJsonTemplate<CR>
+sign define vimspectorBP text=☛ texthl=Normal
+sign define vimspectorBPDisabled text=☞ texthl=Normal
+sign define vimspectorPC text=🔶 texthl=SpellBad
+
+" =========
+" ====== vim-bookmarks
+" =========
+let g:bookmark_no_default_key_mappings = 1
+nmap mt <Plug>BookmarkToggle
+nmap ma <Plug>BookmarkAnnotate
+nmap ml <Plug>BookmarkShowAll
+nmap mi <Plug>BookmarkNext
+nmap mn <Plug>BookmarkPrev
+nmap mC <Plug>BookmarkClear
+nmap mX <Plug>BookmarkClearAll
+nmap mu <Plug>BookmarkMoveUp
+nmap me <Plug>BookmarkMoveDown
+nmap <Leader>g <Plug>BookmarkMoveToLine
+let g:bookmark_save_per_working_dir = 1
+let g:bookmark_auto_save = 1
+let g:bookmark_highlight_lines = 1
+let g:bookmark_manage_per_buffer = 1
+let g:bookmark_save_per_working_dir = 1
+let g:bookmark_center = 1
+let g:bookmark_auto_close = 1
+let g:bookmark_location_list = 1
 
 "==========
 "======semantic configuration
 "=========
-nnoremap <F9>  :SemanticHighlightToggle<cr>
+nnoremap <silent> <S-k>  :SemanticHighlightToggle<cr>
 let s:semanticGUIColors = [ '#72d572', '#c5e1a5', '#e6ee9c', '#fff59d', '#ffe082', '#ffcc80', '#ffab91', '#bcaaa4', '#b0bec5', '#ffa726', '#ff8a65', '#f9bdbb', '#f9bdbb', '#f8bbd0', '#e1bee7', '#d1c4e9', '#ffe0b2', '#c5cae9', '#d0d9ff', '#b3e5fc', '#b2ebf2', '#b2dfdb', '#a3e9a4', '#dcedc8' , '#f0f4c3', '#ffb74d' ]
 :autocmd VimEnter *.sh,*vim*,*.html,*.htm.,*.h,*.c,*.cpp,*.js,*.py,*.php  SemanticHighlight
 
@@ -101,33 +209,33 @@ let s:semanticGUIColors = [ '#72d572', '#c5e1a5', '#e6ee9c', '#fff59d', '#ffe082
 let g:indentLine_setColors = 0
 let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 let g:indentLine_enabled = 1
-"shortcut  <F7> toggle indentLine visualization
-"使用快捷键 <F7>然后按enter 使缩进线可视化或者不可见
-nnoremap <F7> :IndentLinesToggle<CR>
+"shortcut  shift a toggle indentLine visualization
+"使用快捷键 shift a 然后按enter 使缩进线可视化或者不可见
+nnoremap <S-a> :IndentLinesToggle<CR>
 
 "==========
 "====== configuration of plugin nerdtree
 "==========
 "nerdtree can explore file in vim
 "nerdtree能在vim中浏览文件
-"common manipulate  R  refresh derectory  I   display hide file   m     open"manipulate menu
+"common manipulate  R  refresh derectory  I   display hide file   m   open manipulate menu
 let g:undotree_DiffAutoOpen = 1
 let g:undotree_SetFocusWhenToggle = 1
 let g:undotree_ShortIndicators = 1
 let g:undotree_WindowLayout = 2
 let g:undotree_DiffpanelHeight = 8
 let g:undotree_SplitWidth = 24
-map <F6> :NERDTreeToggle<CR>
+map <S-f> :NERDTreeToggle<CR>
 
 "==========
 "====== tagbar configuration
 "==========
-"set tagbar window on left of main window
-" 设置 tagbar 窗口的位置出现在主编辑区的左边
+"set tagbar window on right of main window
+" 设置 tagbar 窗口的位置出现在主编辑区的右边
 let tagbar_left=0
-"<F3>  toggle tagbar
-" 设置显示／隐藏标签列表子窗口的快捷键。快捷键ctrl l
-nnoremap <F3> :TagbarToggle<CR>
+"shift|g  toggle tagbar
+" 设置显示／隐藏标签列表子窗口的快捷键。快捷键shift g
+nnoremap <S-j> :TagbarToggle<CR>
 "set tagbar window  windth
 " 设置标签子窗口的宽度
 let tagbar_width=32
@@ -174,8 +282,8 @@ let g:tagbar_type_cpp = {
 "==========
 "====== "undotree configuration
 "==========
-"use <F8> toggle undotree,you can also use other keyword
-nnoremap <F8> :UndotreeToggle<cr>
+"use shift|h toggle undotree,you can also use other keyword
+nnoremap <S-h> :UndotreeToggle<cr>
 "if you use g:persistent-undo command enable persistent undo,it will record your withdraw history into a file which locate in $HOM."/.undodir" 
 let g:undotree_DiffAutoOpen = 1
 let g:undotree_SetFocusWhenToggle = 1
@@ -202,16 +310,16 @@ let g:UltiSnipsJumpForwardTrigger="<S-e>"
 "shortcut shift d    jump to previous cursor position
 let g:UltiSnipsJumpBackwardTrigger="<S-d>"
 "the code snippets position,the second position is my coustomersnippets position
-let g:UltiSnipsSnippetDirectories =[$HOME.'/.vim/plugged/vim-snippets', $HOME.'/.vim/UserCustomerSnippets' ]
+let g:UltiSnipsSnippetDirectories =[$HOME.'/.config/nvim/plugged/vim-snippets', $HOME.'/.config/nvim/UserCustomerSnippets' ]
 
 "==========
 "====== autoformat configuration
 "==========
 "if you want to debug this plugin, uncomment the blow line it will enable verbose mode convenient plugin debug
 "let g:autoformat_verbosemode=1
-"use <F12>  toggle autoformat
-"使用快捷键 f12 开启代码格式化
-noremap <F12> :Autoformat<CR>
+"use shitf|l  toggle autoformat
+"使用快捷键 shift|l 开启代码格式化
+noremap <S-l> :Autoformat<CR>
 
 "if you want to disable the fallback to vim's indent file, retabbing and removing trailing whitespace, set the following variables to 0.
 "let g:autoformat_autoindent = 0
@@ -231,16 +339,25 @@ let g:formatters_c = ['clangformat_google']
 "use shortcut ctrl k to find file content and use shortcut esc to exit fzf
 set rtp+=/usr/local/opt/fzf
 set rtp+=/home/linuxbrew/.linuxbrew/opt/fzf
-noremap <C-p> :Files<CR>
-noremap <C-f> :Rg<CR>
+noremap <C-p> :Files <CR>
+noremap <C-o> :Files ~/<CR>
+noremap <C-f> :Rg<CR>  "use Rg(ripgrep) to find
+"noremap <C-f> :Ag<CR>  "use Ag(the_silver_searcher)
 noremap <C-h> :History<CR>
-"noremap <C-t> :BTags<CR>
+"noremap <C-t> :BTags<CR> "<C-t> have mapped to vista
 noremap <C-l> :Lines<CR>
 noremap <C-w> :Buffers<CR>
-noremap <leader>; :History:<CR>
-
+"noremap <leader>; :History:<CR>
+"noremap <C-p> :FZF<CR>
+noremap <C-k> :LinesWithPreview<CR>
 let g:fzf_preview_window = 'right:60%'
 let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
+
+command! -bang -nargs=* LinesWithPreview
+    \ call fzf#vim#grep(
+    \   'rg --with-filename --column --line-number --no-heading --color=always --smart-case . '.fnameescape(expand('%')), 1,
+    \   fzf#vim#with_preview({}, 'up:50%', '?'),
+    \   1)
 
 "==========
 "====== vim ariline configuration
@@ -276,8 +393,9 @@ hi NonText ctermfg=gray guifg=grey10
 "====== vim configuration
 "==========
 "vim三种模式分别是文本edit模式，visual模式，normal模式 一些vim的操作 esc进行模式切换， normal模式下 y复制 u撤销 d剪切  i进入编辑模式 任何模式下home跳到行首 end跳到行尾
+"map命令用来查看所有的键位映射，在定义一个键位映射时应该事先查看要定义的键位是否已经被映射。 比如我要定义k的映射，那么事先得查看一下k是否已经被映射 map k
+"nnoremap noremap map nmap 用来定义键位映射
 "=======================================
-"use shortcut za collapse or expand code ,shortcut zM expand all collapse code and shortcut zR collapse all code 
 "快捷键za 折叠或展开代码  zM展开所有折叠的代码  zR折叠所有展开的代码
 "基于语法进行代码折叠
 "set foldmethod=syntax
@@ -295,6 +413,8 @@ set autochdir
 "set signcolumn=no "only use signcolumn will display signcolumn,normally don't display it
 "highlight clear SignColumn "set signcolumn colors same with backgroud colors
 
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+set noswapfile "it will not save swap file
 set autoindent
 set indentexpr=
 "only cursor position on sixth to the last line or sixth line enable scroll
@@ -316,6 +436,7 @@ set lazyredraw "same as above
 set visualbell
 set updatetime=1000
 set virtualedit=block
+"vim autocmd command will match events and auto execute specific command
 :autocmd BufNewFile,BufRead *.html setlocal nowrap
 
 "设置快捷键 shift o 进入粘贴模式，shift p退出粘贴模式，粘贴模式可以防止从网页复制内容到vim而出现奇怪的缩进问题，因为vim的缩减处理和一般文本编辑器不一样
@@ -351,7 +472,7 @@ set nowrap    "set wrap
 " 开启行号显示
 set number
 set relativenumber
-" 高亮显示当前行/列
+" 高亮显示当前行
 set cursorline
 set colorcolumn=80
 "set cursorcolumn
@@ -403,7 +524,7 @@ let g:terminal_color_13 = '#FF92D0'
 let g:terminal_color_14 = '#9AEDFE'
 
 " Compile function
-noremap <F5> :call CompileRunGcc()<CR>
+noremap <S-r> :call CompileRunGcc()<CR>
 func! CompileRunGcc()
 	exec "w"
 	if &filetype == 'c'
@@ -447,11 +568,11 @@ endfunc
 "快捷键 gd(definition ) gy(type definition) gi(implementation) gf(references) 用于完成在标识符之间的跳转
 
 "let g:coc_global_extensions = ['coc-python',  'coc-html', 'coc-json', 'coc-css', 'coc-tsserver', 'coc-cssmodules', 'coc-phpls', 'coc-go', 'coc-clangd']
+"let g:coc_global_extensions = ['coc-python', 'coc-vimlsp', 'coc-cssmodules ', 'coc-phpls', 'coc-html', 'coc-json', 'coc-css', 'coc-tsserver', 'coc-yank',  'coc-vimlsp', 'coc-tailwindcss', 'coc-stylelint', 'coc-tslint', 'coc-lists', 'coc-pyright', 'coc-sourcekit',  'coc-flutter']
 " fix the most annoying bug that coc has
 "silent! au BufEnter,BufRead,BufNewFile * silent! unmap if
-let g:coc_global_extensions = ['coc-python', 'coc-vimlsp', 'coc-cssmodules ', 'coc-phpls', 'coc-html', 'coc-json', 'coc-css', 'coc-tsserver', 'coc-pyright', 'coc-go']
+let g:coc_global_extensions = ['coc-translator', 'coc-python', 'coc-vimlsp', 'coc-phpls', 'coc-html', 'coc-json', 'coc-css', 'coc-tsserver', 'coc-pyright', 'coc-go']
 
-"let g:coc_global_extensions = ['coc-python', 'coc-vimlsp', 'coc-cssmodules ', 'coc-phpls', 'coc-html', 'coc-json', 'coc-css', 'coc-tsserver', 'coc-yank',  'coc-vimlsp', 'coc-tailwindcss', 'coc-stylelint', 'coc-tslint', 'coc-lists', 'coc-pyright', 'coc-sourcekit',  'coc-flutter']
 "set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 "nmap <silent> <TAB> <Plug>(coc-range-select)
 "xmap <silent> <TAB> <Plug>(coc-range-select)
@@ -487,7 +608,8 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 nmap <leader>rn <Plug>(coc-rename)
-nmap tt :CocCommand explorer<CR>
+" coc-translator
+nmap ts <Plug>(coc-translator-p)
 " Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
 xmap <leader>a  <Plug>(coc-codeaction-selected)
 nmap <leader>a  <Plug>(coc-codeaction-selected)

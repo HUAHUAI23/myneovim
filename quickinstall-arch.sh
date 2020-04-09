@@ -19,6 +19,9 @@ ls ~/.config/nvim &>/dev/null && rm -rf  ~/.config/nvim
 mkdir ~/.config/nvim
 mv ./coc-settings.json   ~/.config/nvim
 mv ./init.vim    ~/.config/nvim
+mv ./md-snippets.vim  ~/.config/nvim
+mv ./sample_vimspector_json  ~/.config/nvim
+mkdir ~/.config/nvim/UserCustomerSnippets
 
 pacman -Q | grep python &>/dev/null ||   if sudo pacman -S python  ; then
 																						echo "python installation completed"
@@ -37,9 +40,12 @@ pacman -Q | grep fzf &> /dev/null  || sudo pacman -S fzf
 pacman -Q | grep ctags &> /dev/null || sudo pacman -S ctags
 pacman -Q | grep ccls &> /dev/null  || sudo pacman -S ccls
 pacman -Q | grep clang &> /dev/null || sudo pacman -S clang
-pip install debugpy jedi
+sudo pacman -S the_silver_searcher
+sudo pacman -S ripgrep
+pip install debugpy 
+pip install jedi
 sudo npm i intelephense -g
-
+sudo npm install neovim -g
 
 sudo pacman -S powerline-fonts
 mkdir -p ~/.local/share/fonts

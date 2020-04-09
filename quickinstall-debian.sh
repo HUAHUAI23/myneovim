@@ -19,6 +19,9 @@ ls ~/.config/nvim &>/dev/null && rm -rf  ~/.config/nvim
 mkdir ~/.config/nvim
 mv ./coc-settings.json  ~/.config/nvim
 mv ./init.vim      ~/.config/nvim
+mv ./md-snippets.vim  ~/.config/nvim
+mv ./sample_vimspector_json  ~/.config/nvim
+mkdir ~/.config/nvim/UserCustomerSnippets
 
 
 dpkg -l | grep python &>/dev/null ||   if sudo apt install python  ; then
@@ -29,6 +32,7 @@ dpkg -l | grep python &>/dev/null ||   if sudo apt install python  ; then
 dpkg -l | grep python-pip &>/dev/null || sudo apt install python-pip
 sudo apt install  neovim
 sudo apt install python3-neovim
+sudo npm install neovim -g
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 dpkg -l  | grep nodejs &> /dev/null || sudo apt install nodejs
@@ -36,11 +40,17 @@ dpkg -l  | grep npm &> /dev/null  || sudo apt install npm
 dpkg -l  | grep cmdtest &> /dev/null || sudo apt install cmdtest
 dpkg -l  | grep ctags &> /dev/null || sudo apt install ctags
 dpkg -l  | grep clang &> /dev/null || sudo apt install clang
-pip install debugpy jedi
+pip install debugpy
+pip install jedi
 sudo npm i intelephense -g
 
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install
+sudo apt-get install silversearcher-ag
+
+curl -LO https://github.com/BurntSushi/ripgrep/releases/download/11.0.2/ripgrep_11.0.2_amd64.deb
+sudo dpkg -i ripgrep_11.0.2_amd64.deb
+
 
 sudo apt install fonts-powerline
 mkdir -p ~/.local/share/fonts
