@@ -1,4 +1,4 @@
-{
+{	
 	"coc.preferences.hoverTarget": "preview",
 	"coc.preferences.enableFloatHighlight": true,
 	"coc.preferences.snippetStatusText": "Ⓢ ",
@@ -64,8 +64,90 @@
 		"dart"
 	],
 	"signature.target": "float",
+	"yank.enableCompletion" : false,
+	"explorer.width": 38,
+	"explorer.quitOnOpen": true,
+	"explorer.sources": [
+		{
+			"name": "buffer",
+			"expand": false
+		},
+		{
+			"name": "file",
+			"expand": true
+		}
+	],
+	"explorer.file.column.indent.indentLine": true,
+	"explorer.file.showHiddenFiles": true,
+	"explorer.icon.enableNerdfont": true,
+	"explorer.file.column.git.showIgnored": true,
+	"explorer.keyMappingMode": "none",
+	"explorer.buffer.showHiddenBuffers": false,
+	"explorer.keyMappings": {
+		"u": "nodePrev",
+		"e": "nodeNext",
+		"h": "toggleSelection",
+		"<tab>": "actionMenu",
+		"N": "collapse",
+		"gl": "expandRecursive",
+		"gh": "collapseRecursive",
+		"i": "open",
+		"<cr>": "open",
+		"I": "openInVsplit",
+		"o": "expand",
+		"O": "openInTab",
+		"n": "gotoParent",
+		"l": "gotoParent",
+		"yp": "copyFilepath",
+		"yn": "copyFilename",
+		"yy": "copyFile",
+		"dd": "cutFile",
+		"pp": "pasteFile",
+		"dD": "deleteForever",
+		"a": "addFile",
+		"k": "addFile",
+		"M": "addDirectory",
+		"cw": "rename",
+		".": "toggleHidden",
+		"zh": "toggleHidden",
+		"R": "refresh",
+		"?": "help",
+		"q": "quit",
+		"X": "systemExecute",
+		"gd": "listDrive",
+		"f": "search",
+		"F": "searchRecursive",
+		"B": "gotoSource:file",
+		"b": "gotoSource:buffer",
+		"[[": "sourcePrev",
+		"]]": "sourceNext",
+		"[d": "diagnosticPrev",
+		"]d": "diagnosticNext",
+		"[c": "gitPrev",
+		"]c": "gitNext",
+		"<<": "gitStage",
+		">>": "gitUnstage"
+	},
+	"git.enableGutters": true,
+	"git.branchCharacter":"\uf408",
+	"git.addGBlameToBufferVar": false,
+	"git.addGBlameToVirtualText": false,
+	"git.virtualTextPrefix": " ❯❯❯ ",
+	"git.addedSign.hlGroup": "GitGutterAdd",
+	"git.changedSign.hlGroup": "GitGutterChange",
+	"git.removedSign.hlGroup": "GitGutterDelete",
+	"git.topRemovedSign.hlGroup": "GitGutterDelete",
+	"git.changeRemovedSign.hlGroup": "GitGutterChangeDelete",
+	"git.addedSign.text":"▎",
+	"git.changedSign.text":"░",
+	"git.removedSign.text":"▏",
+	"git.topRemovedSign.text": "▔",
+	"git.changeRemovedSign.text": "▒",
+	"git.enableGlobalStatus": false,
+	"git.signOffset": 2,
 	"tslint.autoFixOnSave": true,
 	"python.autoComplete.addBrackets": true,
+	"python.jediEnabled": false,
 	"python.formatting.provider": "yapf",
 	"python.formatting.yapfArgs": [
         "--style",
@@ -77,6 +159,8 @@
 	"javascript.suggest.names": true,
 	"javascript.suggestionActions.enabled": true,
 	"json.format.enable": true,
+	"todolist.autoUpload": true,
+	"todolist.promptForReminder":false,
 	"languageserver": {
 		"lua": {
 			"command": "lua-lsp",
@@ -109,8 +193,6 @@
 			 }
 		}
 	},
-
-
 
 
 

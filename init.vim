@@ -5,10 +5,10 @@
 "================================================ 未得此道者视之怪诞， ==========================================================
 "================================================ 与之为伴者洞其真谛， ==========================================================
 "================================================ 长修此道者巨变人生。 ==========================================================
-
 if empty(glob('~/.config/nvim/autoload/plug.vim'))
 	autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
+
 
 " Specify a directory for plugins
 " - For Neovim: stdpath('data') . '/plugged'
@@ -83,10 +83,10 @@ let g:gitgutter_map_keys = 0
 let g:gitgutter_override_sign_column_highlight = 0
 let g:gitgutter_preview_win_floating = 1
 autocmd BufWritePost * GitGutter
-nnoremap <LEADER>gf :GitGutterFold<CR>
-nnoremap M :GitGutterPreviewHunk<CR>
-nnoremap <LEADER>g- :GitGutterPrevHunk<CR>
-nnoremap <LEADER>g= :GitGutterNextHunk<CR>
+nnoremap gf :GitGutterFold<CR>
+nnoremap <space>g :GitGutterPreviewHunk<CR>
+nnoremap g- :GitGutterPrevHunk<CR>
+nnoremap g= :GitGutterNextHunk<CR>
 
 "==========
 "====== markdown-preview
@@ -125,7 +125,7 @@ autocmd BufRead,BufNewFile *.md setlocal spell
 " =========
 " ===== vim-table-mode
 " =========
-noremap <LEADER>tm :TableModeToggle<CR>
+noremap tm :TableModeToggle<CR>
 "let g:table_mode_disable_mappings = 1
 let g:table_mode_corner ='|'
 let g:table_mode_delimiter = ''
@@ -186,7 +186,7 @@ nmap mC <Plug>BookmarkClear
 nmap mX <Plug>BookmarkClearAll
 nmap mu <Plug>BookmarkMoveUp
 nmap me <Plug>BookmarkMoveDown
-nmap <Leader>g <Plug>BookmarkMoveToLine
+nmap mg <Plug>BookmarkMoveToLine
 let g:bookmark_save_per_working_dir = 1
 let g:bookmark_auto_save = 1
 let g:bookmark_highlight_lines = 1
@@ -199,7 +199,7 @@ let g:bookmark_location_list = 1
 "==========
 "======semantic configuration
 "=========
-nnoremap <silent> <S-k>  :SemanticHighlightToggle<cr>
+nnoremap <silent> <space>h  :SemanticHighlightToggle<cr>
 let s:semanticGUIColors = [ '#72d572', '#c5e1a5', '#e6ee9c', '#fff59d', '#ffe082', '#ffcc80', '#ffab91', '#bcaaa4', '#b0bec5', '#ffa726', '#ff8a65', '#f9bdbb', '#f9bdbb', '#f8bbd0', '#e1bee7', '#d1c4e9', '#ffe0b2', '#c5cae9', '#d0d9ff', '#b3e5fc', '#b2ebf2', '#b2dfdb', '#a3e9a4', '#dcedc8' , '#f0f4c3', '#ffb74d' ]
 :autocmd VimEnter *.sh,*vim*,*.html,*.htm.,*.h,*.c,*.cpp,*.js,*.py,*.php  SemanticHighlight
 
@@ -209,9 +209,8 @@ let s:semanticGUIColors = [ '#72d572', '#c5e1a5', '#e6ee9c', '#fff59d', '#ffe082
 let g:indentLine_setColors = 0
 let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 let g:indentLine_enabled = 1
-"shortcut  shift a toggle indentLine visualization
-"使用快捷键 shift a 然后按enter 使缩进线可视化或者不可见
-nnoremap <S-a> :IndentLinesToggle<CR>
+"shortcut  <space>+v toggle indentLine visualization
+nnoremap <space>v :IndentLinesToggle<CR>
 
 "==========
 "====== configuration of plugin nerdtree
@@ -225,7 +224,7 @@ let g:undotree_ShortIndicators = 1
 let g:undotree_WindowLayout = 2
 let g:undotree_DiffpanelHeight = 8
 let g:undotree_SplitWidth = 24
-map <S-f> :NERDTreeToggle<CR>
+map <space>f :NERDTreeToggle<CR>
 
 "==========
 "====== tagbar configuration
@@ -233,9 +232,8 @@ map <S-f> :NERDTreeToggle<CR>
 "set tagbar window on right of main window
 " 设置 tagbar 窗口的位置出现在主编辑区的右边
 let tagbar_left=0
-"shift|g  toggle tagbar
-" 设置显示／隐藏标签列表子窗口的快捷键。快捷键shift g
-nnoremap <S-j> :TagbarToggle<CR>
+"shortcut <space>+t  toggle tagbar
+nnoremap <space>t :TagbarToggle<CR>
 "set tagbar window  windth
 " 设置标签子窗口的宽度
 let tagbar_width=32
@@ -282,7 +280,7 @@ let g:tagbar_type_cpp = {
 "==========
 "====== "undotree configuration
 "==========
-"use shift|h toggle undotree,you can also use other keyword
+"use H toggle undotree,you can also use other keyword
 nnoremap <S-h> :UndotreeToggle<cr>
 "if you use g:persistent-undo command enable persistent undo,it will record your withdraw history into a file which locate in $HOM."/.undodir" 
 let g:undotree_DiffAutoOpen = 1
@@ -292,22 +290,21 @@ let g:undotree_WindowLayout = 2
 let g:undotree_DiffpanelHeight = 8
 let g:undotree_SplitWidth = 24
 if has("persistent_undo")
-        set undodir=~/.undodir"
+        set undodir=~/.config/nvim/undodir"
         set undofile
 endif
-
 
 "==========
 "====== ultisnips configuration
 "==========
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
-"shortcut shift e    expand code snippets and jump to next cursor position
-"快捷键shift e展开代码模板 
+"shortcut  E   expand code snippets and jump to next cursor position
+"快捷键E展开代码模板 
 let g:UltiSnipsExpandTrigger="<S-e>"
-"快捷键shift e跳转光标至模板下一待输入位置
+"快捷键E跳转光标至模板下一待输入位置
 let g:UltiSnipsJumpForwardTrigger="<S-e>"
-"快捷键shift d跳转光标至模板上一待输入位置
-"shortcut shift d    jump to previous cursor position
+"快捷键D跳转光标至模板上一待输入位置
+"shortcut D    jump to previous cursor position
 let g:UltiSnipsJumpBackwardTrigger="<S-d>"
 "the code snippets position,the second position is my coustomersnippets position
 let g:UltiSnipsSnippetDirectories =[$HOME.'/.config/nvim/plugged/vim-snippets', $HOME.'/.config/nvim/UserCustomerSnippets' ]
@@ -317,8 +314,8 @@ let g:UltiSnipsSnippetDirectories =[$HOME.'/.config/nvim/plugged/vim-snippets', 
 "==========
 "if you want to debug this plugin, uncomment the blow line it will enable verbose mode convenient plugin debug
 "let g:autoformat_verbosemode=1
-"use shitf|l  toggle autoformat
-"使用快捷键 shift|l 开启代码格式化
+"use L  toggle autoformat
+"使用快捷键 L 开启代码格式化
 noremap <S-l> :Autoformat<CR>
 
 "if you want to disable the fallback to vim's indent file, retabbing and removing trailing whitespace, set the following variables to 0.
@@ -340,7 +337,7 @@ let g:formatters_c = ['clangformat_google']
 set rtp+=/usr/local/opt/fzf
 set rtp+=/home/linuxbrew/.linuxbrew/opt/fzf
 noremap <C-p> :Files <CR>
-noremap <C-o> :Files ~/<CR>
+noremap <C-m> :Files ~/<CR>
 noremap <C-f> :Rg<CR>  "use Rg(ripgrep) to find
 "noremap <C-f> :Ag<CR>  "use Ag(the_silver_searcher)
 noremap <C-h> :History<CR>
@@ -366,7 +363,7 @@ command! -bang -nargs=* LinesWithPreview
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
-"let g:airline#extensions#tabline#formatter = 'default'
+let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 "let g:airline_powerline_fonts = 1
 
 "====================================
@@ -375,7 +372,7 @@ let g:airline#extensions#tabline#left_alt_sep = '|'
 
 set termguicolors " enable true colors support
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-"set t_Co=256
+set t_Co=256
 
 " 配色方案
 "================================
@@ -392,7 +389,6 @@ hi NonText ctermfg=gray guifg=grey10
 "==========
 "====== vim configuration
 "==========
-"vim三种模式分别是文本edit模式，visual模式，normal模式 一些vim的操作 esc进行模式切换， normal模式下 y复制 u撤销 d剪切  i进入编辑模式 任何模式下home跳到行首 end跳到行尾
 "map命令用来查看所有的键位映射，在定义一个键位映射时应该事先查看要定义的键位是否已经被映射。 比如我要定义k的映射，那么事先得查看一下k是否已经被映射 map k
 "nnoremap noremap map nmap 用来定义键位映射
 "=======================================
@@ -405,8 +401,8 @@ set foldmethod=indent
 set foldlevel=99
 set foldenable "set nofoldenable
 
-"将当前目录跳转到当前打开文件的目录
 let &t_ul=''
+"将当前目录跳转到当前打开文件的目录
 set autochdir
 
 "gutter (signcolumn) settings
@@ -427,7 +423,7 @@ set formatoptions-=tc
 set splitright
 set splitbelow
 set noshowmode
-"display commands that inputed
+"display charcters that inputed
 set showcmd
 set shortmess+=c
 set completeopt=longest,noinsert,menuone,noselect,preview
@@ -441,8 +437,8 @@ set virtualedit=block
 
 "设置快捷键 shift o 进入粘贴模式，shift p退出粘贴模式，粘贴模式可以防止从网页复制内容到vim而出现奇怪的缩进问题，因为vim的缩减处理和一般文本编辑器不一样
 "<cr>是enter键
-nnoremap <S-o> :set paste<CR>
-nnoremap <S-p> :set nopaste<CR>
+nnoremap sp  :set paste<CR>
+nnoremap P :set nopaste<CR>
 " 定义快捷键的前缀，即<Leader>
 let mapleader=";"
 " 定义快捷键关闭当前分割窗口
@@ -455,7 +451,15 @@ nmap <Leader>WQ :wa<CR>:q<CR>
 nmap <Leader>Q :qa!<CR>
 " 依次遍历子窗口
 nnoremap nw <C-W><C-W>
-
+map sh :split<CR>
+map sv :vsplit<CR>
+map <space><up> :res +5<CR>
+map <space><down> :res -5<CR>
+map <space><left> :vertical resize+5<CR>
+map <space><right> :vertical resize-5<CR>
+map tb :tabe<CR>
+map tn :+tabnext<CR>
+map tp :-tabnext<CR>
 "开启实时搜索功能
 set incsearch
 " 搜索时大小写不敏感
@@ -571,7 +575,7 @@ endfunc
 "let g:coc_global_extensions = ['coc-python', 'coc-vimlsp', 'coc-cssmodules ', 'coc-phpls', 'coc-html', 'coc-json', 'coc-css', 'coc-tsserver', 'coc-yank',  'coc-vimlsp', 'coc-tailwindcss', 'coc-stylelint', 'coc-tslint', 'coc-lists', 'coc-pyright', 'coc-sourcekit',  'coc-flutter']
 " fix the most annoying bug that coc has
 "silent! au BufEnter,BufRead,BufNewFile * silent! unmap if
-let g:coc_global_extensions = ['coc-translator', 'coc-python', 'coc-vimlsp', 'coc-phpls', 'coc-html', 'coc-json', 'coc-css', 'coc-tsserver', 'coc-pyright', 'coc-go']
+let g:coc_global_extensions = ['coc-git', 'coc-gitignore', 'coc-translator', 'coc-python', 'coc-vimlsp', 'coc-phpls', 'coc-html', 'coc-json', 'coc-css', 'coc-tsserver', 'coc-pyright', 'coc-go']
 
 "set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 "nmap <silent> <TAB> <Plug>(coc-range-select)
@@ -607,7 +611,7 @@ nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
-nmap <leader>rn <Plug>(coc-rename)
+nmap rn <Plug>(coc-rename)
 " coc-translator
 nmap ts <Plug>(coc-translator-p)
 " Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
