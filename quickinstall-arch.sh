@@ -20,7 +20,6 @@ mkdir ~/.config/nvim
 mv ./coc-settings.json   ~/.config/nvim
 mv ./init.vim    ~/.config/nvim
 mv ./md-snippets.vim  ~/.config/nvim
-mv ./sample_vimspector_json  ~/.config/nvim
 mkdir ~/.config/nvim/UserCustomerSnippets
 
 pacman -Q | grep python &>/dev/null ||   if sudo pacman -S python  ; then

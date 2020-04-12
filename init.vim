@@ -5,9 +5,6 @@
 "================================================ 未得此道者视之怪诞， ==========================================================
 "================================================ 与之为伴者洞其真谛， ==========================================================
 "================================================ 长修此道者巨变人生。 ==========================================================
-if empty(glob('~/.config/nvim/autoload/plug.vim'))
-	autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
 
 
 " Specify a directory for plugins
@@ -62,8 +59,6 @@ Plug 'makerj/vim-pdf'
 Plug 'gko/vim-coloresque'
 " Taglist
 Plug 'liuchengxu/vista.vim'
-" Debugger
-Plug 'puremourning/vimspector', {'do': './install_gadget.py --enable-c --enable-python'}
 " markdown
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install_sync() }, 'for' :['markdown', 'vim-plug'] }
 Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeToggle' }
@@ -71,9 +66,19 @@ Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeToggle' }
 Plug 'airblade/vim-gitgutter'
 "Bookmark
 Plug 'MattesGroeger/vim-bookmarks'
+"elsy align
+Plug 'junegunn/vim-easy-align'
 "end of plugin
 " Initialize plugin system
 call plug#end()
+
+"==========
+"====== vim-easy-align
+"=========
+"visual mode
+xmap ga <Plug>(EasyAlign)
+"normal mode
+nmap ga <Plug>(EasyAlign)
 
 " =========
 " ====== GitGutter
@@ -140,7 +145,7 @@ let g:rainbow_active = 1
 " ===== Vista.vim
 " =======
 noremap <silent> T :Vista!!<CR>
-noremap <c-t> :silent! Vista finder<CR>
+noremap <c-t> :silent! Vista finder coc<CR>
 let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
 let g:vista_default_executive = 'ctags'
 let g:vista_fzf_preview = ['right:50%']
@@ -154,24 +159,6 @@ function! NearestMethodOrFunction() abort
 endfunction
 set statusline+=%{NearestMethodOrFunction()}
 autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
-
-" =========
-" ====== vimspector
-" =========
-let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
-function! s:read_template_into_buffer(template)
-	" has to be a function to avoid the extra space fzf#run insers otherwise
-	execute '0r ~/.config/nvim/sample_vimspector_json/'.a:template
-endfunction
-command! -bang -nargs=* LoadVimSpectorJsonTemplate call fzf#run({
-			\   'source': 'ls -1 ~/.config/nvim/sample_vimspector_json',
-			\   'down': 20,
-			\   'sink': function('<sid>read_template_into_buffer')
-			\ })
-noremap <leader>vs :tabe .vimspector.json<CR>:LoadVimSpectorJsonTemplate<CR>
-sign define vimspectorBP text=☛ texthl=Normal
-sign define vimspectorBPDisabled text=☞ texthl=Normal
-sign define vimspectorPC text=🔶 texthl=SpellBad
 
 " =========
 " ====== vim-bookmarks
@@ -434,7 +421,8 @@ set updatetime=1000
 set virtualedit=block
 "vim autocmd command will match events and auto execute specific command
 :autocmd BufNewFile,BufRead *.html setlocal nowrap
-
+"Auto change directory to current dir
+autocmd BufEnter * silent! lcd %:p:h
 "设置快捷键 shift o 进入粘贴模式，shift p退出粘贴模式，粘贴模式可以防止从网页复制内容到vim而出现奇怪的缩进问题，因为vim的缩减处理和一般文本编辑器不一样
 "<cr>是enter键
 nnoremap sp  :set paste<CR>
