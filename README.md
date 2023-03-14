@@ -1,3 +1,3 @@
 # myneovim
 
-![pic](./)
+![pic](./1.png)
